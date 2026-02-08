@@ -125,3 +125,12 @@ sudo certbot --nginx -d be.aravindpillai.com
 
 # Verify HTTPS:
 > curl -v https://be.aravindpillai.com/ping/
+
+
+
+===============
+
+# When any new updates are done.
+> git pull
+> sudo systemctl restart gunicorn
+> sudo systemctl reload nginx
