@@ -1,0 +1,136 @@
+# Update OS and Install necessary libs
+> apt update && apt upgrade -y
+> apt install -y python3 python3-venv python3-pip git nginx ufw
+
+# Get the code
+> git clone https://github.com/aravindrpillai/aravindrpillai.com-BE.git .
+
+# Create virtual environment
+> python3 -m venv /root/venv
+
+# Activate venv
+> source /root/venv/bin/activate
+
+# Verify installed python (OP should be:  /root/venv/bin/python):
+> which python
+
+# Install dependencies
+> pip install --upgrade pip
+> pip install -r requirements.txt
+> pip install django gunicorn
+> pip freeze > requirements.txt
+
+# Edit settings.py, and configure the allowed host and cors and DEBUG = False
+> nano <project>/settings.py
+
+# Edit app.properties, and update the properties
+> nano app.properties
+
+# Run migrations
+> python manage.py migrate
+
+# Test locally (And if it works, stop server)
+> python manage.py runserver 0.0.0.0:80
+> curl http://127.0.0.1:80/ping
+
+# Edit Gunicorn:
+> sudo nano /etc/systemd/system/gunicorn.service
+
+#Paste the below (without lines)
+-----------------------------------------------
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/root/aravindrpillai.com-BE
+Environment="DJANGO_SETTINGS_MODULE=arp.settings"
+Environment="PYTHONUNBUFFERED=1"
+
+ExecStart=/root/aravindrpillai.com-BE/.venv/bin/gunicorn arp.wsgi:application \
+  --bind 127.0.0.1:8000 \
+  --workers 3 \
+  --timeout 120
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+-----------------------------------------------
+
+#Reload + Restart:
+> sudo systemctl daemon-reload
+> sudo systemctl restart gunicorn
+> sudo systemctl status gunicorn --no-pager
+
+#If it fails, show logs:
+> sudo journalctl -u gunicorn -n 200 --no-pager
+
+# Confirm Gunicorn is reachable locally. You should get some HTTP response.
+ss -lntp | grep 8000
+curl -I http://127.0.0.1:8000
+
+
+#Install Nginx + Certbot
+> sudo apt update
+> sudo apt install -y nginx
+> sudo systemctl enable nginx
+> sudo systemctl start nginx
+> sudo apt install -y certbot python3-certbot-nginx
+
+# Nginx config for be.aravindpillai.com
+sudo nano /etc/nginx/sites-available/be.aravindpillai.com
+
+#Paste the below (without lines), and then -> Cntrl+o , Enter, Cntrl + x
+-----------------------------------------------
+server {
+    listen 80;
+    server_name be.aravindpillai.com;
+
+    client_max_body_size 20M;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+-----------------------------------------------
+
+
+# Enable and reload:
+> sudo ln -s /etc/nginx/sites-available/be.aravindpillai.com /etc/nginx/sites-enabled/
+> sudo rm -f /etc/nginx/sites-enabled/default
+> sudo nginx -t
+> sudo systemctl reload nginx
+
+# Validate HTTP works
+> curl -I http://be.aravindpillai.com/ping/
+
+> Not Install the certificate:
+sudo certbot --nginx -d be.aravindpillai.com
+
+# Do a sanity check:
+> sudo head -n 5 /etc/nginx/sites-available/be.aravindpillai.com
+
+
+# Make sure firewall allows HTTP (80) / HTTPS(443)
+> sudo ufw allow 'Nginx Full'
+> ufw reload
+> sudo ufw status
+
+# Verify HTTPS:
+> curl -v https://be.aravindpillai.com/ping/
+
+
+
+===========================================
+
+# When any new updates are pushed.
+> git pull
+> sudo systemctl restart gunicorn
+> sudo systemctl reload nginx
