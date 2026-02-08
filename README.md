@@ -36,8 +36,7 @@
 # Edit Gunicorn:
 > sudo nano /etc/systemd/system/gunicorn.service
 
-#Paste the below (without lines)
------------------------------------------------
+# Paste the below
 [Unit]
 Description=gunicorn daemon
 After=network.target
@@ -58,14 +57,13 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
------------------------------------------------
 
-#Reload + Restart:
+# Reload + Restart:
 > sudo systemctl daemon-reload
 > sudo systemctl restart gunicorn
 > sudo systemctl status gunicorn --no-pager
 
-#If it fails, show logs:
+# If it fails, show logs:
 > sudo journalctl -u gunicorn -n 200 --no-pager
 
 # Confirm Gunicorn is reachable locally. You should get some HTTP response.
@@ -73,7 +71,7 @@ ss -lntp | grep 8000
 curl -I http://127.0.0.1:8000
 
 
-#Install Nginx + Certbot
+# Install Nginx + Certbot
 > sudo apt update
 > sudo apt install -y nginx
 > sudo systemctl enable nginx
@@ -83,8 +81,8 @@ curl -I http://127.0.0.1:8000
 # Nginx config for be.aravindpillai.com
 sudo nano /etc/nginx/sites-available/be.aravindpillai.com
 
-#Paste the below (without lines), and then -> Cntrl+o , Enter, Cntrl + x
------------------------------------------------
+# Paste the below, and then -> Cntrl+o , Enter, Cntrl + x
+
 server {
     listen 80;
     server_name be.aravindpillai.com;
@@ -99,7 +97,6 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
------------------------------------------------
 
 
 # Enable and reload:
@@ -111,8 +108,8 @@ server {
 # Validate HTTP works
 > curl -I http://be.aravindpillai.com/ping/
 
-> Not Install the certificate:
-sudo certbot --nginx -d be.aravindpillai.com
+# Now install the certificate:
+> sudo certbot --nginx -d be.aravindpillai.com
 
 # Do a sanity check:
 > sudo head -n 5 /etc/nginx/sites-available/be.aravindpillai.com
@@ -126,9 +123,6 @@ sudo certbot --nginx -d be.aravindpillai.com
 # Verify HTTPS:
 > curl -v https://be.aravindpillai.com/ping/
 
-
-
-===========================================
 
 # When any new updates are pushed.
 > git pull
