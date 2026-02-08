@@ -19,7 +19,8 @@ ALLOWED_HOSTS = [
     'be.aravindpillai.com'
 ]
 CORS_ALLOWED_ORIGINS = [
-    'http://216.128.180.248', # FrontEnd
+    "https://aravindpillai.com",
+    "https://www.aravindpillai.com",
     'http://127.0.0.1', 
     'http://localhost'
 ]
