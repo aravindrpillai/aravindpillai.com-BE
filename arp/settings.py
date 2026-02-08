@@ -12,20 +12,14 @@ SECRET_KEY = 'django-insecure-u7!c^1%+)lr%m_li4(vops!+u^hqato2zami-7+&^gj28*7)2m
 
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    '127.0.0.1', 
-    'localhost', 
-    'aravindpillai.com', 
-    'be.aravindpillai.com'
-]
-CORS_ALLOWED_ORIGINS = [
-    "https://aravindpillai.com",
-    "https://www.aravindpillai.com",
-    'http://127.0.0.1', 
-    'http://localhost'
-]
+if DEBUG:
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    CORS_ALLOWED_ORIGINS = [ "http://localhost:3000", "http://127.0.0.1:3000" ]
+else:
+    ALLOWED_HOSTS = ["aravindpillai.com", "be.aravindpillai.com"]
+    CORS_ALLOWED_ORIGINS = ["https://aravindpillai.com", "https://www.aravindpillai.com" ]
 
-CORS_ALLOW_HEADERS = list(default_headers) + ['token', 'name', 'content-type']
+CORS_ALLOW_HEADERS = list(default_headers) + ['token', 'name']
 
 
 INSTALLED_APPS = [
