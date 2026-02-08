@@ -13,22 +13,15 @@ SECRET_KEY = 'django-insecure-u7!c^1%+)lr%m_li4(vops!+u^hqato2zami-7+&^gj28*7)2m
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '149.248.57.227', # BackEnd
-    '216.128.176.119', # FrontEnd - Old
-    '216.128.180.248', # FrontEnd - New
     '127.0.0.1', 
     'localhost', 
     'aravindpillai.com', 
-    'www.aravindpillai.com'
+    'be.aravindpillai.com'
 ]
 CORS_ALLOWED_ORIGINS = [
-    'http://149.248.57.227', # BackEnd
-    'http://216.128.176.119', # FrontEnd - Old
-    'http://216.128.180.248', # FrontEnd - New
+    'http://216.128.180.248', # FrontEnd
     'http://127.0.0.1', 
-    'http://localhost',  
-    'http://aravindpillai.com', 
-    'http://www.aravindpillai.com'
+    'http://localhost'
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + ['token', 'name', 'content-type']
