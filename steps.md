@@ -128,9 +128,9 @@ sudo certbot --nginx -d be.aravindpillai.com
 
 
 
-===============
+===========================================
 
-# When any new updates are done.
+# When any new updates are pushed.
 > git pull
 > sudo systemctl restart gunicorn
 > sudo systemctl reload nginx

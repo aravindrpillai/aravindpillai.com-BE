@@ -2,3 +2,5 @@
 *.pyc
 /qchat/apis/__pycache__
 *.pyc
+*.sqlite3
+*.pyc
