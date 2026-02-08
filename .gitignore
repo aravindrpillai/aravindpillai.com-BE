@@ -1,3 +1,4 @@
 *.pyc
 *.pyc
 /qchat/apis/__pycache__
+*.pyc

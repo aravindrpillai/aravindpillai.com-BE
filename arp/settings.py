@@ -66,6 +66,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'arp.wsgi.application'
 
+SQLLITE = {
     'ENGINE': 'django.db.backends.sqlite3',
     'NAME': BASE_DIR / 'db.sqlite3',
 }
