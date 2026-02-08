@@ -66,21 +66,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'arp.wsgi.application'
 
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': BASE_DIR / 'db.sqlite3',
+}
+
+POSTGRES = {
+    "ENGINE": "django.db.backends.postgresql",
+    "NAME": config["database"]["dbname"],
+    "USER": config["database"]["username"],
+    "PASSWORD": config["database"]["password"],
+    "HOST": config["database"]["host"],
+    "PORT": config["database"]["port"],
+    "CONN_MAX_AGE": 60,
+    "OPTIONS": {"sslmode": "require"}
+}
+
 DATABASES = {
-    'sqllite': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config["database"]["dbname"],
-        "USER": config["database"]["username"],
-        "PASSWORD": config["database"]["password"],
-        "HOST": config["database"]["host"],
-        "PORT": config["database"]["port"],
-        "CONN_MAX_AGE": 60,
-        "OPTIONS": {"sslmode": "require"}
-    }
+    'default': SQLLITE if DEBUG else POSTGRES  
 }
 
 

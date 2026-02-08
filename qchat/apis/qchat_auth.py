@@ -24,10 +24,6 @@ class QChatAuthentication(BaseAuthentication):
                     deleted_count, _ = qc.conversations.all().delete()
                     raise AuthenticationFailed("Locked. (E004)")
                 
-                #If in debug mode, we can pass plain code, else emcrypted token is required
-                if settings.DEBUG:
-                    token = Encryption.encrypt(token, str(qc.code))
-                
                 decryptedCode = Encryption.decrypt(token, str(qc.code))
                 if str(qc.code) != decryptedCode:
                     qc.incorrect_pw_count = (qc.incorrect_pw_count + 1)
