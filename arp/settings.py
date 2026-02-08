@@ -1,11 +1,9 @@
-import os
 from pathlib import Path
 from corsheaders.defaults import default_headers
 
 import configparser
 config = configparser.ConfigParser()
 config.read("app.properties")
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-u7!c^1%+)lr%m_li4(vops!+u^hqato2zami-7+&^gj28*7)2m'
