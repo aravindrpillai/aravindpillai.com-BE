@@ -2,8 +2,8 @@ from django.db import models
 
 class Textbox(models.Model):
 
-    content = models.TextField(null=False, unique=True)
-    code = models.CharField(max_length=10, null=False)
-    
+    code = models.CharField(max_length=10, null=False, unique=True)
+    content = models.TextField(null=True)
+
     class Meta:
         db_table = "textbox"
