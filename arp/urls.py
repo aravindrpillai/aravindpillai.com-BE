@@ -3,10 +3,12 @@ from qchat.apis.qchatconv import QChatConvAPI
 from qchat.apis.qchat_admin import QuickChatAdminAPI
 from anonymous.api import AnonymousAPI
 from textbox.api import TextBoxAPI
+from stocks.api import StocksAPI
 from django.http import JsonResponse
 from django.views import View
 
 class PingAPI(View):
+    
     def get(self, request):
         try:
             from util.communication_util import CommunicationUtil
@@ -28,5 +30,8 @@ urlpatterns = [
 
     #Textbox
     path("arp/textbox/<str:code>/", TextBoxAPI.as_view(), name="text-box-api"),
+    
+    #Stocks
+    path("arp/stocks/<str:ticker>/", StocksAPI.as_view(), name="stocks-box-api"),
     
 ]

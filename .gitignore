@@ -6,3 +6,5 @@
 *.pyc
 /.venv
 *.pyc
+/arp/__pycache__
+*.pyc

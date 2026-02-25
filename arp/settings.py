@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'qchat',
     'anonymous',
-    'textbox'
+    'textbox',
+    'stocks'
 ]
 
 MIDDLEWARE = [
