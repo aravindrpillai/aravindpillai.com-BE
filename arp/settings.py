@@ -82,6 +82,7 @@ POSTGRES = {
 
 DATABASES = {
     'default': SQLLITE if DEBUG else POSTGRES  
+    'default': POSTGRES  
 }
 
 
