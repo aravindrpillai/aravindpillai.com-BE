@@ -45,8 +45,8 @@ class QChatConvAPI(APIView):
             # -------- RATE LIMIT CHECK (1 HOUR) --------
             if qc.last_email_time:
                 diff = now - qc.last_email_time
-                if diff < timedelta(hours=2):
-                    return HttpUtil.respond(429, "Last notification didn’t complete 2 hours", None)
+                if diff < timedelta(minutes=15):
+                    return HttpUtil.respond(429, "Last notification didn’t complete 15 min", None)
 
             # -------- SEND EMAIL --------
             if qc.emails and len(qc.emails) > 0:
